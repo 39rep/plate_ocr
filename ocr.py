@@ -1,15 +1,35 @@
 import easyocr
+import re
 
 
 reader = easyocr.Reader(["en"])
-for i in range(1, 25):
-    result = reader.readtext(f"/home/god/mp/univ/plate_ocr/yellows/output/number{str(i).zfill(3)}.jpg")
-    if result:
-        number = result[-1][1:]
-    else:
-        number = "-----None"
-    print(f"plate{str(i)}:\n{number}")
+contents = ""
 
+for i in range(600):
+    # result = reader.readtext(f"/home/god/mp/univ/plate_ocr/yellows/output/number{str(i).zfill(3)}.jpg")
+    result = reader.readtext(f"/home/lagusa/python/palte_ocr/front_views/plate{str(i)}.jpg")
+
+    if result:
+        number_str: str = result[-1][1]
+    else:
+        number_str = "-----None"
+
+    # 数字のみにする
+    number = re.sub(r"\D", "", number_str)
+    if number == "":
+        number = "-----None"
+    number = number + "\n"
+
+    # ファイルに書き込む内容まとめる
+    contents = contents + number
+
+# ファイル書き込み
+with open("/home/lagusa/python/palte_ocr/ocr.txt", mode="w") as f:
+    f.write(contents)
+
+    # print(f"plate{str(i)}:\n{number_str}")
+
+# 構造例
 [
     (
         [

@@ -5,8 +5,8 @@ import numpy as np
 def resize_image():
     pass
 
-def main(folder_path):
-    image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
+def main(input_folder, output_folder):
+    image_files = [f for f in os.listdir(input_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
 
     if not image_files:
         print("指定されたフォルダに画像が見つかりませんでした。")
@@ -16,8 +16,8 @@ def main(folder_path):
     image_files.sort()
 
     for image_file in image_files:
-        image_path = os.path.join(folder_path, image_file)
-        output_path = os.path.join(folder_path, "output/" ,image_file)
+        image_path = os.path.join(input_folder, image_file)
+        output_path = os.path.join(output_folder, image_file)
         img = cv2.imread(image_path)
 
         # 縦横比で変換比率決定
@@ -25,7 +25,9 @@ def main(folder_path):
         diff = 0
         height, width, _ = img.shape[:3]
         aspect_ratio = width / height
-        if aspect_ratio < 1.6:
+        if aspect_ratio < 1.5:
+            diff = 35
+        elif aspect_ratio < 1.6:
             diff = 30
         elif aspect_ratio < 1.8:
             diff = 20
@@ -52,5 +54,6 @@ def main(folder_path):
 
 
 if __name__ == "__main__":
-    folder_path = "/home/god/mp/univ/plate_ocr/yellows"
-    main(folder_path)
+    input_folder = "/home/lagusa/python/palte_ocr/originals"
+    output_folder = "/home/lagusa/python/palte_ocr/front_views"
+    main(input_folder, output_folder)
