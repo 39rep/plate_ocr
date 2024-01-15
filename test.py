@@ -43,9 +43,18 @@ def main(input_folder, output_folder):
         # 投影変換
         M = cv2.getPerspectiveTransform(pts1,pts2)
         dst = cv2.warpPerspective(img,M,(250,height))
+
         # グレースケール
         dst = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
+        # ナンバーだけ切り取るみたいな
         dst = dst[30:120, 50:240]
+
+        # 32x100にリサイズ
+        new_width = int((250*32)/height)
+        dst = cv2.resize(dst, dsize=(new_width, 32))
+        left = int((100-new_width)/2)
+        dst = cv2.copyMakeBorder(dst, 0, 0, left, 100-new_width-left, cv2.BORDER_CONSTANT, value=dst.mean())
+        
         # ネガポジ反転
         # if dst.mean() < 150:
         #     dst = 255 - dst
@@ -54,6 +63,9 @@ def main(input_folder, output_folder):
 
 
 if __name__ == "__main__":
-    input_folder = "/home/lagusa/python/palte_ocr/originals"
-    output_folder = "/home/lagusa/python/palte_ocr/front_views"
+    input_folder = "/home/god/mp/univ/plate_ocr/originals_02"
+    output_folder = "/home/god/mp/univ/plate_ocr/front_views_02_32x100"
+
+    # input_folder = "/home/lagusa/python/palte_ocr/03_selected"
+    # output_folder = "/home/lagusa/python/palte_ocr/front_views_03"
     main(input_folder, output_folder)
