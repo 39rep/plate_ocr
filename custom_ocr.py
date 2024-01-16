@@ -12,18 +12,17 @@ def main(img_dir):
     image_files = natsorted(image_files)
     
     for image_file in image_files:
+        number_str = ""
         result = reader.readtext(os.path.join(img_dir, image_file))
 
         # 結果の有無
         if result:
             number_str: str = result[-1][1]
-        else:
-            number_str = "-----None"
 
         # 数字のみにする
         number = re.sub(r"\D", "", number_str)
-        if number == "":
-            number = "-----None"
+        # if number != "":
+        #     number = int(number) % 10000
 
         # ファイルに書き込む内容まとめる
         contents = contents + image_file + "\t" + number + "\n"
