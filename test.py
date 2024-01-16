@@ -2,8 +2,6 @@ import cv2
 import os
 import numpy as np
 
-def resize_image():
-    pass
 
 def main(input_folder, output_folder):
     image_files = [f for f in os.listdir(input_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
